@@ -12,6 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.solitodolist.ui.theme.SoliTodoListTheme
+import com.example.solitodolist.ui.components.Header
+import com.example.solitodolist.ui.components.Footer
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,7 +31,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
@@ -37,11 +38,25 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         modifier = modifier
     )
 }
+@Composable
+fun AppSoliToDo()
+{
+    Scaffold(
+        topBar = {
+            Header()
+        },
+        bottomBar = {
+            Footer()
+        }
+    ){innerPadding->
+        Text(text = "Content" , modifier = Modifier.padding(innerPadding))
+    }
+}
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     SoliTodoListTheme {
-        Greeting("Android")
+        AppSoliToDo()
     }
 }

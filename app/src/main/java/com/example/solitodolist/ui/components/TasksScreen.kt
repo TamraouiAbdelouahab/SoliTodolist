@@ -8,7 +8,7 @@ import com.example.solitodolist.data.Task
 
 @Composable
 fun TasksScreen(
-    tasks:List<Task>
+    tasks: List<Task>
 )
 {
     LazyColumn {

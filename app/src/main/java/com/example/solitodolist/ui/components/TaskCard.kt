@@ -19,12 +19,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.solitodolist.Repositories.TaskOpertaions
 import com.example.solitodolist.data.Task
 import com.example.solitodolist.network.RetrofitClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @Composable
 fun TaskCard(
@@ -54,7 +54,7 @@ fun TaskCard(
                 IconButton(onClick = {
                     completed = if (completed == 1) 0 else 1
                     task.status = completed
-                    update(task)
+                    TaskOpertaions().update(task)
                 }) {
                     if (completed == 1){
                     Icon(
@@ -75,7 +75,7 @@ fun TaskCard(
             IconButton(onClick = {
                 important = if (important == 1) 0 else 1
                 task.important = important
-
+                TaskOpertaions().update(task)
             }) {
                 Icon(
                     imageVector = Icons.Default.Star,
@@ -91,9 +91,8 @@ fun update(task: Task)
 {
     CoroutineScope(Dispatchers.IO).launch {
         try {
-            // Vérification de la réponse brute
             val response = RetrofitClient.api.updateTask(task.id, task)
-            Log.i("update", "Task changed: $response") // Log de la réponse brute
+            Log.i("update", "Task changed: $response")
 
         } catch (e: Exception) {
             Log.e("API_ERROR", "Erreur : ${e.message}")

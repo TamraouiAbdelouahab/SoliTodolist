@@ -11,8 +11,6 @@ data class Task(
     var tasklist_id:Int
 
 ) {
-
-
     var status: Int =0
         get() = field
         set(value) {field = value}

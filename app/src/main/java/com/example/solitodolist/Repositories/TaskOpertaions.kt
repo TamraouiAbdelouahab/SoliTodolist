@@ -32,29 +32,27 @@ class TaskOpertaions {
             null
         }
     }
-
-    @Composable
+    @SuppressLint("CoroutineCreationDuringComposition")
     fun store(task: Task) {
-        LaunchedEffect(Unit) {
+
+        CoroutineScope(Dispatchers.IO).launch {
             try {
-                withContext(Dispatchers.IO) {
-                    RetrofitClient.api.storeTask(task=task)
-                }
-                //task = result
+                var response = RetrofitClient.api.storeTask(task=task)
+                Log.i("store", "Task added: $response")
+
             } catch (e: Exception) {
                 Log.e("API_ERROR", "Type d'erreur : ${e::class.java.simpleName}")
                 Log.e("API_ERROR", "Message : ${e.message ?: "Aucun message"}")
             }
         }
     }
-
     @SuppressLint("CoroutineCreationDuringComposition")
     fun update(task: Task) {
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val response = RetrofitClient.api.updateTask(task.id, task)
-                Log.i("update", "Task changed: $response")
+                val response = task.id?.let { RetrofitClient.api.updateTask(it, task) }
+                Log.i("updatetask", "Task changed: $response")
 
             } catch (e: Exception) {
                 Log.e("API_ERROR", "Erreur : ${e.message}")
@@ -63,14 +61,12 @@ class TaskOpertaions {
     }
 
 
-    @Composable
+
     fun delete(taskId: Int){
-        LaunchedEffect(Unit) {
+        CoroutineScope(Dispatchers.IO).launch {
             try {
-                withContext(Dispatchers.IO) {
-                    RetrofitClient.api.deleteTask(taskId=taskId)
-                }
-                //task = result
+                RetrofitClient.api.deleteTask(taskId=taskId)
+
             } catch (e: Exception) {
                 Log.e("API_ERROR", "Type d'erreur : ${e::class.java.simpleName}")
                 Log.e("API_ERROR", "Message : ${e.message ?: "Aucun message"}")

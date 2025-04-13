@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -21,12 +22,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.solitodolist.Repositories.TaskOpertaions
 import com.example.solitodolist.data.Task
 import com.example.solitodolist.network.RetrofitClient
+import com.example.solitodolist.viewModel.TasksviewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -34,7 +35,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun TaskCard(
     task:Task,
-    navController: NavController
+    navController: NavController,
+    tasksviewModel: TasksviewModel = viewModel()
 ) {
     var completed by remember { mutableStateOf(task.status) }
     var important by remember { mutableStateOf(task.important) }
@@ -89,6 +91,16 @@ fun TaskCard(
                     imageVector = Icons.Default.Star,
                     contentDescription = "Important",
                     tint = if (important == 1) Color(0xFFFFC107) else Color.Gray
+                )
+            }
+            IconButton(onClick = {
+                task.id?.let { TaskOpertaions().delete(it) }
+                tasksviewModel.deleteTask(task)
+            }) {
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = "Important",
+                    tint = Color.Red
                 )
             }
         }

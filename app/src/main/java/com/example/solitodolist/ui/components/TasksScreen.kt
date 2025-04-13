@@ -107,7 +107,7 @@ fun TasksScreen(
             {
                 LazyColumn {
                     items(tasks!!.value) { task ->
-                        TaskCard(task,navController)
+                        TaskCard(task,navController,tasksviewModel)
                     }
                 }
             }
